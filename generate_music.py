@@ -44,7 +44,7 @@ notes_map = {
 
 notes = []
 
-for n in xrange(-33, 58, 1):
+for n in range(-33, 58, 1):
      notes.append(int(440*pow(pow(2, 1/12.0),n)))
 
 RATE = 44100.0
@@ -122,7 +122,7 @@ def generateSong(songname, song, drawbar, ):
     prev_note = None
     prev_note_data = []
 
-    for x in xrange(0, 1):
+    for x in range(0, 1):
         for s in songdata.split(','):
             duration = wholenote / default_duration
             num = 0
@@ -159,7 +159,7 @@ def generateSong(songname, song, drawbar, ):
 
 
                 # Sum all generators
-                for h in xrange(0, 9):
+                for h in range(0, 9):
                     x += int(drawbar[h])*sin(2*pi*i*freq*registrations[h]/RATE)
 
                     # Add another at a slightly different frequency with decay
@@ -186,33 +186,33 @@ def generateSong(songname, song, drawbar, ):
 
     data = normalize(data)
 
-    wvData = ''
+    wvData = []
     for v in data:
-        wvData += pack('h', v)
+        wvData += pack('h', int(v))
 
-    wv.writeframes(wvData)
+    wv.writeframes(bytearray(wvData))
     wv.close()
 
-if len(sys.argv) > 2 and sys.argv[2] in songs.keys():
+if len(sys.argv) > 2 and sys.argv[2] in list(songs.keys()):
     if len(sys.argv[1]) != 9:
-        print "Drawbar must have 9 values"
+        print("Drawbar must have 9 values")
         sys.exit(-1)
 
     for c in sys.argv[1]:
         if not  c.isdigit():
-            print "Drawbar can only have digits"
+            print("Drawbar can only have digits")
             sys.exit(-1)
 
-    print "Generating song: %s" % (sys.argv[2], )
-    print "Drawbar: %s " % (sys.argv[1], )
+    print("Generating song: %s" % (sys.argv[2], ))
+    print("Drawbar: %s " % (sys.argv[1], ))
 
     generateSong(sys.argv[2], songs[sys.argv[2]], sys.argv[1],)
-    print "Done"
+    print("Done")
 else:
-    print "Usage: python %s drawbar songname" % (sys.argv[0], )
-    print "   Drawbar is composed by 9 integers within 0-8. Ex: 288820000"
-    print "Available song names are:"
-    print songs.keys()
+    print("Usage: python %s drawbar songname" % (sys.argv[0], ))
+    print("   Drawbar is composed by 9 integers within 0-8. Ex: 288820000")
+    print("Available song names are:")
+    print(list(songs.keys()))
 
 
 
